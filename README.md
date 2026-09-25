@@ -1,13 +1,66 @@
 # DELSU Student Enquiry System
 
-A context-aware chatbot that answers student enquiries from an approved
-knowledge base (using Retrieval-Augmented Generation), with real student
-accounts (chat History + Profile), thumbs up/down feedback, and an admin
-back office (analytics dashboard, enquiry browser, knowledge-base editor,
-user management, and app settings).
+**Design and Implementation of a Context-Aware Student Enquiry Chatbot with
+Analytics-Driven Decision Support System** — a B.Sc. Computer Science
+final-year project built as a realistic MVP, not a toy demo.
+
+Prospective and current students get instant, accurate answers to
+admissions, fees, deadlines, registration, and results questions from a
+chatbot grounded in the institution's own approved knowledge base — not the
+AI's general training data, and not guesses. Administrators get a live
+analytics dashboard that turns every one of those conversations into
+decision-support data: what students are actually asking about, how often,
+and whether the answers were helpful.
+
+## What it does
+
+**For students**
+- Chat with no account required (anonymous "prospective student" mode) —
+  or log in for a saved conversation **History** and a **Profile**.
+- Every answer is retrieved from an approved FAQ knowledge base via
+  Retrieval-Augmented Generation (RAG) — embeddings + cosine similarity,
+  not keyword search and not the AI improvising.
+- **Context-aware**: a follow-up like "what about the deadline?" is
+  understood using the conversation so far, not treated as a fresh question.
+- Rate any reply (👍/👎) with an optional comment.
+- Works on desktop and mobile — the whole UI, including the sidebar
+  navigation, is responsive.
+
+**For administrators**
+- **Analytics dashboard**: total enquiries, active users, knowledge-base
+  size, and feedback — plus charts for enquiry categories and daily trends,
+  all computed live from real data (no placeholders).
+- **Enquiry browser**: read any student's conversation.
+- **Knowledge-base editor**: add/edit/delete FAQs; each is automatically
+  re-embedded so the chatbot can use it immediately.
+- **User management**: create student or admin accounts (there's no public
+  sign-up — access is admin-controlled).
+- **Settings**: change the institution name and the chatbot's welcome
+  message without touching code.
+
+## Why it's built this way
+
+The technology choices below were made deliberately, not by default —
+see the sections that follow for the reasoning behind each one:
+
+| Layer | Choice | Why (short version) |
+|---|---|---|
+| Frontend + backend | Next.js (App Router) + Material UI | One codebase for the UI, API routes, and role-gated middleware — see [Why Next.js](#why-nextjs-instead-of-vanilla-htmlcssjs) |
+| Database | Supabase (Postgres) + pgvector | Managed Postgres, auth, and vector search in one place — see [Why Supabase](#why-supabase-instead-of-fastapi--postgresql--sqlalchemy) |
+| AI | OpenAI (embeddings + chat) | text-embedding-3-small for retrieval, a cheap chat-completion model for replies |
+| Hosting | Vercel | Ships the frontend, API routes, and edge middleware as one deployment |
+
+Full technical documentation — architecture diagrams, the database schema,
+UML design, API reference, and the testing/evaluation plan — is in the
+sections below and in [docs/DESIGN.md](docs/DESIGN.md) and
+[docs/TESTING.md](docs/TESTING.md). A formatted project write-up (PDF and
+Word) covering the same ground is in
+[docs/PROJECT_WRITEUP.pdf](docs/PROJECT_WRITEUP.pdf).
 
 ## Table of contents
 
+- [What it does](#what-it-does)
+- [Why it's built this way](#why-its-built-this-way)
 - [Why Next.js instead of vanilla HTML/CSS/JS](#why-nextjs-instead-of-vanilla-htmlcssjs)
 - [Why Supabase instead of FastAPI + PostgreSQL + SQLAlchemy](#why-supabase-instead-of-fastapi--postgresql--sqlalchemy)
 - [Architecture](#architecture)
